@@ -41,11 +41,10 @@ export default function Home() {
     <main className="min-h-screen pt-[81px]">
       <Header />
       <Hero />
-      <WhoWeAre />
       <WhatWeBuild />
       <SelectedWork />
       <WorkingTogether />
-      <Contact />
+      <WhoWeAreAndContact />
       <Footer />
     </main>
   );
@@ -111,7 +110,7 @@ function Hero() {
         We design, build, and ship whole products.
       </h1>
       <p className="mt-6 max-w-xl text-lg text-muted leading-relaxed text-center sm:text-left mx-auto sm:mx-0">
-        Two people, no overhead. One builds, one runs the client side.
+        Two people. No layers. One builds, one runs the client side.
         You work directly with both of us.
       </p>
 
@@ -120,7 +119,7 @@ function Hero() {
   );
 }
 
-// Signature element: the "two people, no overhead" claim drawn as an actual
+// Signature element: the "two people, no layers" claim drawn as an actual
 // system diagram rather than described. Idea -> Build -> Ship -> Client -> Support.
 function Schematic() {
   const nodes = [
@@ -181,71 +180,6 @@ function Schematic() {
         ))}
       </div>
     </div>
-  );
-}
-
-function WhoWeAre() {
-  return (
-    <section className="border-t hairline">
-      <div className="mx-auto max-w-page px-6 py-16 sm:py-20">
-        <p className="eyebrow !text-sm mb-10 text-center sm:text-left">Who you&apos;re working with</p>
-        <div className="grid gap-10 sm:grid-cols-2">
-          <div>
-            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-2">
-              <Image
-                src="/team/lukass.jpg"
-                alt="Lukass"
-                width={56}
-                height={56}
-                className="rounded-full border hairline object-cover"
-              />
-              <h3 className="font-display font-semibold text-ink text-xl">
-                Lukass
-              </h3>
-            </div>
-            <p className="text-muted leading-relaxed">
-              Leads the build. Years taking products from zero to one, from
-              his own apps built solo to company products where he owned the
-              architecture and led the team, across web, mobile, and backend.
-              Built fast with modern, AI-powered tooling, but engineered to
-              last, not thrown together.
-            </p>
-            <a
-              href="https://www.linkedin.com/in/lukass-sicevs/"
-              className="link-underline text-sm text-muted block w-fit mx-auto sm:mx-0 mt-3"
-            >
-              LinkedIn ↗
-            </a>
-          </div>
-          <div>
-            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-2">
-              <Image
-                src="/team/daniels.jpg"
-                alt="Daniels"
-                width={56}
-                height={56}
-                className="rounded-full border hairline object-cover"
-              />
-              <h3 className="font-display font-semibold text-ink text-xl">
-                Daniels
-              </h3>
-            </div>
-            <p className="text-muted leading-relaxed">
-              Runs the client side: scoping, commercials, and the
-              relationship from first call to delivery and beyond. A tech
-              background paired with years managing high-stakes clients and
-              high-trust relationships.
-            </p>
-            <a
-              href="https://www.linkedin.com/in/danielskalnins/"
-              className="link-underline text-sm text-muted block w-fit mx-auto sm:mx-0 mt-3"
-            >
-              LinkedIn ↗
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -541,32 +475,241 @@ function WorkingTogether() {
   );
 }
 
-function Contact() {
+const inputClass =
+  "w-full border hairline bg-bg text-ink text-sm px-3 py-2.5 rounded-md focus-visible:outline-none focus-visible:border-ink";
+
+function WhoWeAreAndContact() {
+  const [showForm, setShowForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [buildType, setBuildType] = useState("");
+  const [platform, setPlatform] = useState("");
+  const [timeframe, setTimeframe] = useState("");
+  const [budget, setBudget] = useState("");
+  const [details, setDetails] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting" | "sent" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async () => {
+    if (status === "submitting") return;
+    setStatus("submitting");
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, buildType, platform, timeframe, budget, details }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrorMessage(data.error || "Something went wrong. Please try again.");
+        setStatus("error");
+        return;
+      }
+      setStatus("sent");
+    } catch {
+      setErrorMessage("Something went wrong. Please try again.");
+      setStatus("error");
+    }
+  };
+
   return (
     <section id="contact" className="border-t hairline">
       <div className="mx-auto max-w-page px-6 py-16 sm:py-20">
-        <p className="eyebrow !text-sm mb-8 text-center sm:text-left">Get in touch</p>
-        <div className="flex flex-col items-center sm:items-start sm:flex-row gap-8 sm:gap-16">
-          <div className="text-center sm:text-left">
-            <p className="text-ink font-display font-semibold mb-1">Lukass</p>
-            <a
-              href="mailto:lukass.sicevs@gmail.com"
-              className="link-underline text-muted"
-            >
-              lukass.sicevs@gmail.com
-            </a>
-          </div>
-          <div className="text-center sm:text-left">
-            <p className="text-ink font-display font-semibold mb-1">
-              Daniels
+        <p className="eyebrow !text-sm mb-10 text-center sm:text-left">Who you&apos;re working with</p>
+        <div className="grid gap-10 sm:grid-cols-2">
+          <div>
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-2">
+              <Image
+                src="/team/lukass.jpg"
+                alt="Lukass"
+                width={56}
+                height={56}
+                className="rounded-full border hairline object-cover"
+              />
+              <h3 className="font-display font-semibold text-ink text-xl">
+                Lukass
+              </h3>
+            </div>
+            <p className="text-muted leading-relaxed">
+              Leads the build. Years taking products from zero to one, from
+              his own apps built solo to company products where he owned the
+              architecture and led the team, across web, mobile, and backend.
+              Built fast with modern, AI-powered tooling, but engineered to
+              last, not thrown together.
             </p>
             <a
-              href="mailto:dan.kalnins@gmail.com"
-              className="link-underline text-muted"
+              href="https://www.linkedin.com/in/lukass-sicevs/"
+              className="link-underline text-sm text-muted block w-fit mx-auto sm:mx-0 mt-3"
             >
-              dan.kalnins@gmail.com
+              LinkedIn ↗
             </a>
           </div>
+          <div>
+            <div className="flex flex-col sm:flex-row items-center sm:items-center gap-3 mb-2">
+              <Image
+                src="/team/daniels.jpg"
+                alt="Daniels"
+                width={56}
+                height={56}
+                className="rounded-full border hairline object-cover"
+              />
+              <h3 className="font-display font-semibold text-ink text-xl">
+                Daniels
+              </h3>
+            </div>
+            <p className="text-muted leading-relaxed">
+              Runs the client side: scoping, commercials, and the
+              relationship from first call to delivery and beyond. A tech
+              and data background combined with years in sales, negotiation,
+              and client management.
+            </p>
+            <a
+              href="https://www.linkedin.com/in/danielskalnins/"
+              className="link-underline text-sm text-muted block w-fit mx-auto sm:mx-0 mt-3"
+            >
+              LinkedIn ↗
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-20 pt-16 sm:pt-20 border-t hairline text-center sm:text-left">
+          <p className="eyebrow !text-sm mb-3">Get in touch</p>
+          <h2 className="font-display font-semibold text-ink text-3xl sm:text-4xl tracking-tight max-w-xl mx-auto sm:mx-0">
+            Have something you want built?
+          </h2>
+          <p className="mt-4 max-w-xl text-muted leading-relaxed mx-auto sm:mx-0">
+            Tell us what you&apos;re working on. Whether you have an idea, an
+            existing product, or a business problem that software could
+            solve, tell us what you&apos;re trying to do.
+          </p>
+
+          {!showForm ? (
+            <button
+              onClick={() => setShowForm(true)}
+              className="mt-8 inline-flex items-center gap-2 bg-ink text-bg px-6 py-3 rounded-md font-medium text-sm hover:opacity-90 transition-opacity"
+            >
+              Start a conversation ↗
+            </button>
+          ) : status === "sent" ? (
+            <div className="mt-8 max-w-xl mx-auto sm:mx-0">
+              <p className="text-ink font-display font-semibold text-lg">
+                Message sent.
+              </p>
+              <p className="mt-2 text-muted leading-relaxed">
+                Thanks — we&apos;ll get back to you shortly.
+              </p>
+            </div>
+          ) : (
+            <div className="mt-8 max-w-xl mx-auto sm:mx-0 text-left space-y-5">
+              <div>
+                <label className="eyebrow text-[0.7rem] block mb-2">
+                  Your email
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="you@company.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    What are you trying to build?
+                  </label>
+                  <select
+                    value={buildType}
+                    onChange={(e) => setBuildType(e.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="">Select one</option>
+                    <option>New product</option>
+                    <option>Existing product</option>
+                    <option>Internal tool</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    Platform
+                  </label>
+                  <select
+                    value={platform}
+                    onChange={(e) => setPlatform(e.target.value)}
+                    className={inputClass}
+                  >
+                    <option value="">Select one</option>
+                    <option>Web</option>
+                    <option>Mobile</option>
+                    <option>Both</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    Timeframe
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 2-3 months"
+                    value={timeframe}
+                    onChange={(e) => setTimeframe(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    Approximate budget
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. $20-40k"
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="eyebrow text-[0.7rem] block mb-2">
+                  Tell us more
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="What are you trying to do?"
+                  value={details}
+                  onChange={(e) => setDetails(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+              {status === "error" && (
+                <p className="text-sm text-red-600">{errorMessage}</p>
+              )}
+              <button
+                onClick={handleSubmit}
+                disabled={status === "submitting" || !email}
+                className="inline-flex items-center gap-2 bg-ink text-bg px-6 py-3 rounded-md font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === "submitting" ? "Sending…" : "Send ↗"}
+              </button>
+            </div>
+          )}
+
+          <p className="mt-8 text-sm text-muted">
+            <a
+              href="mailto:dan.kalnins@gmail.com"
+              className="link-underline text-ink/80"
+            >
+              Daniels
+            </a>
+            {" · "}
+            <a
+              href="mailto:lukass.sicevs@gmail.com"
+              className="link-underline text-ink/80"
+            >
+              Lukass
+            </a>
+          </p>
         </div>
       </div>
     </section>

@@ -12,6 +12,16 @@ explicitly asked to add something — this is a services page, not a SaaS app.
 Do not introduce a SaaS-style boilerplate (auth, billing, multi-tenancy)
 into this repo; that would be the wrong tool for what this page does.
 
+**One deliberate exception**: `app/api/contact/route.ts`, a small
+serverless API route that sends the contact form via Resend
+(`RESEND_API_KEY` env var — see `.env.local.example`). Added 2026-08-26
+because the earlier `mailto:` approach popped an external mail client,
+which the user explicitly didn't want ("no in-between programs opening").
+This is not a CMS/database/auth and doesn't change the "static site"
+nature of the page — it's a single stateless endpoint with no persistence.
+Don't expand it into anything more than that (no submission storage, no
+admin view) without being asked.
+
 ## Source of truth for copy
 
 The copy in `app/page.tsx` was finalized through many rounds of editing in
@@ -49,9 +59,38 @@ concrete claims over adjectives, no hedging.
   otherwise.
 - **Daniels' bio** deliberately avoids "closing deals" language — earlier
   drafts framed him as only useful for landing the sale, which read as
-  serving the agency's interest, not the client's. Current framing is
-  "managing high-stakes clients and high-trust relationships," which
-  implies ongoing care, not just closing. Preserve that framing if editing.
+  serving the agency's interest, not the client's. As of 2026-08-26 the
+  bio is Daniels' own proposed wording: "Runs the client side: scoping,
+  commercials, and the relationship from first call to delivery and
+  beyond. A tech and data background combined with years in sales,
+  negotiation, and client management." This supersedes the earlier
+  "high-stakes clients and high-trust relationships" phrasing (that
+  framing is gone from the page now, not just paraphrased) — preserve the
+  "ongoing relationship, not just closing" spirit if editing further, but
+  don't reintroduce the old sentence verbatim thinking it's still current.
+- **Hero claim: "Two people. No layers."** (changed 2026-08-26 from
+  wording built around "no overhead"). Daniels' feedback was that "no
+  overhead" reads as "cheap"; "no layers" communicates small + senior +
+  direct + efficient instead. Don't revert to "no overhead" phrasing
+  anywhere on the page.
+- **Contact is a CTA, not a bare mailto list.** The old "Get in touch /
+  [email] / [email]" ending was replaced 2026-08-26 with a proper CTA:
+  headline "Have something you want built?", a supporting paragraph, a
+  "Start a conversation" button, and (behind that button) a short,
+  progressive-disclosure lead-qualification form — what they're building,
+  platform, timeframe, budget, and a free-text field — not a long
+  15-question form. Individual emails still exist but are now a secondary
+  "Daniels · Lukass" byline below the CTA, not the primary display. The
+  "Who you're working with" bios and this CTA are combined into one
+  section (`WhoWeAreAndContact` in `app/page.tsx`) placed at the very end
+  of the page, right before the footer — it used to be a standalone
+  section right after the hero; don't split it back apart or move it back
+  up without being asked. The form collects the visitor's own email plus
+  the qualification answers and POSTs to `/api/contact` (see Stack
+  exception above), which sends via Resend — no `mailto:` and no external
+  app opens. This replaced an earlier `mailto:`-based version (2026-08-26)
+  specifically because the user wanted a submission to go straight to both
+  founders without switching the visitor to a mail client.
 - **Lukass' bio** explicitly distinguishes "his own apps built solo" from
   "company products where he owned the architecture and led the team" — do
   not collapse this back into vague language that could read as him being
@@ -98,7 +137,9 @@ one, so don't reintroduce color accents without being asked.
   (small mono labels/eyebrows — the "spec sheet" annotation feel).
 - Signature element: the hero schematic (`Schematic` component in
   `app/page.tsx`) — Idea → Design → Build → Deploy → Support, drawn as
-  connected icon-badge nodes (lucide-react icons). No longer names Lukass
+  connected icon-badge nodes (Phosphor icons, `@phosphor-icons/react` —
+  swapped from lucide-react so brand logos like App Store/Google
+  Play/Chrome are available). No longer names Lukass
   or Daniels directly (removed 2026-08-25 — see "Who you're working with"
   for where their names now live instead). This is the one deliberate
   visual risk on the page; don't dilute it by adding more decoration
@@ -111,7 +152,9 @@ one, so don't reintroduce color accents without being asked.
 
 - Not deployed anywhere yet, but the name is no longer the blocker — this
   deploys cleanly to Vercel (`vercel deploy` from this directory, or
-  connect the GitHub repo in the Vercel dashboard) whenever it's time.
+  connect the GitHub repo in the Vercel dashboard) whenever it's time. When
+  it is deployed, `RESEND_API_KEY` needs to be set in the Vercel project's
+  env vars or the contact form will fail — see `.env.local.example`.
 - No analytics.
 - Screenshots and app icons ARE wired in now (animated marquee rows per
   project in `SelectedWork`, pulled from each app's App Store/Play Store

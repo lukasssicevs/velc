@@ -1,7 +1,7 @@
-# VELC Agency — landing page
+# VELC Product Studio — landing page
 
-Single-page Next.js site for VELC Agency, the two-person product studio
-run by Lukass Sicevs (build) and Daniels Kalnins (client side). See
+Single-page Next.js site for VELC Product Studio, built by Lukass Sicevs
+(build) and Daniels Kalnins (client side). See
 `CLAUDE.md` for full context, brand decisions already made, and what's
 still open — read that first before making changes, especially with
 Claude Code.
@@ -33,7 +33,7 @@ error but doesn't crash.
 
 ## Deploying
 
-Not deployed yet. Name is decided (VELC Agency); run `vercel deploy`
+Not deployed yet. Name is decided (VELC Product Studio); run `vercel deploy`
 from this directory (needs the Vercel CLI and an account) or connect this
 repo in the Vercel dashboard for automatic deploys on push. Set
 `RESEND_API_KEY` (and optionally `CONTACT_FROM_EMAIL`) in the Vercel

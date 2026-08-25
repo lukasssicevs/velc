@@ -37,20 +37,50 @@ concrete claims over adjectives, no hedging.
 
 ## Brand decisions already made (don't relitigate these)
 
-- **Studio name: VELC Agency**, but displayed as just **"VELC"** almost
-  everywhere (header, page title/metadata). Chosen 2026-08-25, reversing
-  the earlier "personal names over company name" preference (see history
-  below) — this was a deliberate, knowing tradeoff, not an accident, so
-  don't revert it without being asked. The "you talk to the people
-  building it, no account manager" differentiator is preserved a level
-  down: the header/metadata carry just "VELC", but the "Who you're working
-  with" section still names Lukass and Daniels personally, with photos and
-  direct contact info — that's what actually delivers on the "no overhead"
-  claim now. The full form "VELC Agency" only appears where a bare
-  four-letter word genuinely isn't enough: the footer copyright line, and
-  (once picked) the domain/legal name. Don't spell out "VELC Agency" on
-  the visible page elsewhere without being asked — the whole point is that
-  it stays backgrounded.
+- **Studio name: VELC Product Studio**, but displayed as just **"VELC"**
+  almost everywhere (header, page title/metadata) — same backgrounding
+  pattern as before, just a different suffix. Originally "VELC Agency"
+  (chosen 2026-08-25), changed to "VELC Product Studio" on 2026-08-26
+  after Lukass worked through what the studio actually is: pure client
+  work, with Daniels having no ownership stake in anything shown on the
+  page (see "Portfolio attribution" below) — so "product studio" is used
+  here in its common sense (a team applying real product craft/design
+  discipline to client work, the way Metalab or Ueno used the term), not
+  as a venture-studio ownership claim. This also deliberately keeps
+  "studio" available in Lukass's own vocabulary for a future venture he'd
+  actually own outright — using it for VELC isn't meant to claim VELC owns
+  what it ships for clients. Don't revert to "Agency" or relitigate this
+  without being asked. The "you talk to the people building it, no
+  account manager" differentiator is preserved a level down: the
+  header/metadata carry just "VELC", but the "Who you're working with"
+  section still names Lukass and Daniels personally, with photos and
+  direct contact info. The full form "VELC Product Studio" only appears
+  where a bare four-letter word genuinely isn't enough: the footer
+  copyright line, the contact-form sender name
+  (`app/api/contact/route.ts`), and (once picked) the domain/legal name.
+  Don't spell it out on the visible page elsewhere without being asked —
+  the whole point is that it stays backgrounded.
+- **Portfolio attribution — considered, deliberately kept minimal
+  (2026-08-26).** None of the projects in `SelectedWork` involved
+  Daniels — all five predate VELC and are Lukass's work alone. For
+  context in case this comes up again: Drippler is his own solo project;
+  Moneliq, FinMercado, and the white label mobile system were built while
+  directly employed by those companies themselves (in-house, literally);
+  Enterprise Web Solutions (Puma, Läderach, Cervera) was built while
+  employed at a separate digital agency that had those brands as clients
+  (not in-house at Puma etc.). A "built in-house / at a digital agency,
+  before VELC" clause was briefly added to all four non-Drippler
+  descriptions, then reverted the same day — decided it was solving a
+  problem the page already handles: the "Who you're working with" bio
+  already discloses the solo-vs-company-work distinction ("his own apps
+  built solo to company products where he owned the architecture and led
+  the team"), and repeating it per-project made the portfolio copy read
+  hedgy/CV-like instead of the short, confident, declarative voice used
+  everywhere else. Drippler's "built solo... all one person" line is a
+  capability flex (one person, four platforms), not an attribution
+  disclaimer — don't mistake it for a pattern to replicate on the other
+  four. Don't re-add per-project employment clauses without being asked
+  again.
 - **Location: Dubai, UAE** (footer). Not Riga — Riga is where Lukass and
   Daniels met, a separate fact from where the studio is now based; don't
   conflate the two if editing either.
@@ -99,19 +129,20 @@ concrete claims over adjectives, no hedging.
 
 ## Naming history (context, not an open decision anymore)
 
-The name is decided (VELC Agency, see above). Earlier ideas considered
-and rejected before landing there, kept for context in case this comes up
-again:
+The name is decided (VELC Product Studio, see above). Earlier ideas
+considered and rejected before landing there, kept for context in case
+this comes up again:
 
 - Acronym-based names off "TKS" (initials tied to a place in Riga where
   they met) — rejected because they require explanation to any
   non-Latvian-speaking client, which is the entire target market (Western
   Europe / US, explicitly not Latvia).
 - Generic "[X] Solutions" / "[X] Agency" suffixes — originally rejected as
-  generic-sounding. Note: VELC Agency itself uses this suffix pattern —
-  that rejection was knowingly overridden, not forgotten. If a future
-  rename comes up, this tension is worth surfacing again rather than
-  silently re-deciding it.
+  generic-sounding, then "VELC Agency" was used anyway (2026-08-25) as a
+  knowing tradeoff. Revisited the next day and changed to "VELC Product
+  Studio" (2026-08-26, see "Studio name" above) once Lukass worked through
+  what he actually wants "studio" to mean for him long-term. "Solutions"
+  remains rejected either way — don't reintroduce it.
 - Playful/ironic names riffing on "vibe coding" (e.g. "Vibe Police") —
   rejected as too unserious for high-value client pitches.
 

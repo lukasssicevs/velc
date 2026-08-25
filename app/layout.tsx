@@ -30,7 +30,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "VELC — Products built and shipped",
   description:
-    "Two people, no overhead. One builds, one runs the client side. Whole products, taken from an idea to something real people use.",
+    "Two people, no layers. One builds, one runs the client side. Whole products, taken from an idea to something real people use.",
 };
 
 export default function RootLayout({

@@ -720,7 +720,7 @@ function Footer() {
   return (
     <footer className="border-t hairline">
       <div className="mx-auto max-w-page px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 text-center sm:text-left eyebrow">
-        <span>© {new Date().getFullYear()} VELC Agency</span>
+        <span>© {new Date().getFullYear()} VELC Product Studio</span>
         <span>Dubai, UAE</span>
       </div>
     </footer>

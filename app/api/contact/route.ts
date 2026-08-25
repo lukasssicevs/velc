@@ -6,7 +6,7 @@ import { Resend } from "resend";
 // Daniels manually for now.
 const TO_EMAILS = ["lukass.sicevs@gmail.com"];
 const FROM_EMAIL =
-  process.env.CONTACT_FROM_EMAIL || "VELC Agency <onboarding@resend.dev>";
+  process.env.CONTACT_FROM_EMAIL || "VELC Product Studio <onboarding@resend.dev>";
 
 function escapeHtml(value: string) {
   return value

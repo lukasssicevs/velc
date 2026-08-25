@@ -20,16 +20,8 @@ which the user explicitly didn't want ("no in-between programs opening").
 This is not a CMS/database/auth and doesn't change the "static site"
 nature of the page — it's a single stateless endpoint with no persistence.
 Don't expand it into anything more than that (no submission storage, no
-admin view) without being asked.
-
-Recipients are both founders (`TO_EMAILS` in that file) — don't drop
-either one to work around delivery errors. Until a domain is verified in
-Resend (resend.com/domains), the account is in **sandbox mode**: Resend
-only lets the shared `onboarding@resend.dev` sender deliver to the
-account owner's own inbox, so multi-recipient sends will 403 locally.
-That's expected in sandbox mode, not a bug — the fix is verifying a
-domain and setting `CONTACT_FROM_EMAIL` to an address on it, not removing
-recipients from the code.
+admin view) without being asked. Current recipient list is intentionally
+Lukass-only for now — see "What's NOT done yet" below before changing it.
 
 ## Source of truth for copy
 
@@ -168,6 +160,18 @@ one, so don't reintroduce color accents without being asked.
 - Screenshots and app icons ARE wired in now (animated marquee rows per
   project in `SelectedWork`, pulled from each app's App Store/Play Store
   listing) — this used to be an open item, it isn't anymore.
+- **Contact form only delivers to Lukass right now** (`TO_EMAILS` in
+  `app/api/contact/route.ts`), a deliberate temporary call made
+  2026-08-26, not an oversight — Daniels forwards manually until this is
+  fixed. Cause: Resend's sandbox mode (no verified sending domain) only
+  lets the shared `onboarding@resend.dev` sender deliver to the account
+  owner's own inbox, so adding Daniels back in 403s until a domain is
+  verified. The user only owns `drippler.xyz` right now, not a VELC
+  domain, and chose not to verify a `drippler.xyz` subdomain as a
+  stand-in for branding reasons. Real fix, once there's a VELC domain (or
+  the user decides a drippler.xyz subdomain is fine after all): verify it
+  in Resend (resend.com/domains), point `CONTACT_FROM_EMAIL` at an
+  address on it, add Daniels back to `TO_EMAILS`.
 
 ## Running locally
 

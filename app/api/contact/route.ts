@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const TO_EMAILS = ["dan.kalnins@gmail.com", "lukass.sicevs@gmail.com"];
+// Lukass-only until a domain is verified in Resend (Resend sandbox mode only
+// delivers to the account owner's own inbox) — see CLAUDE.md. Forward to
+// Daniels manually for now.
+const TO_EMAILS = ["lukass.sicevs@gmail.com"];
 const FROM_EMAIL =
   process.env.CONTACT_FROM_EMAIL || "VELC Agency <onboarding@resend.dev>";
 

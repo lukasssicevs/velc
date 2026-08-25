@@ -22,6 +22,15 @@ nature of the page — it's a single stateless endpoint with no persistence.
 Don't expand it into anything more than that (no submission storage, no
 admin view) without being asked.
 
+Recipients are both founders (`TO_EMAILS` in that file) — don't drop
+either one to work around delivery errors. Until a domain is verified in
+Resend (resend.com/domains), the account is in **sandbox mode**: Resend
+only lets the shared `onboarding@resend.dev` sender deliver to the
+account owner's own inbox, so multi-recipient sends will 403 locally.
+That's expected in sandbox mode, not a bug — the fix is verifying a
+domain and setting `CONTACT_FROM_EMAIL` to an address on it, not removing
+recipients from the code.
+
 ## Source of truth for copy
 
 The copy in `app/page.tsx` was finalized through many rounds of editing in

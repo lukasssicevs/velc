@@ -81,7 +81,7 @@ function Header() {
       }`}
     >
       <div className="mx-auto max-w-page px-6 py-5 flex items-center justify-center sm:justify-between">
-        <span className="font-logo italic font-medium text-ink text-4xl tracking-tight">
+        <span className="font-display font-medium text-ink text-3xl tracking-[0.18em]">
           VELC
         </span>
         <nav className="hidden sm:flex gap-6 eyebrow">

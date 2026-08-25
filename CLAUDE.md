@@ -165,8 +165,38 @@ one, so don't reintroduce color accents without being asked.
 - Colors: bg `#FAFAF8`, surface `#F2F2EF`, ink `#151515`, muted `#6E6E6B`,
   hairline `#E6E6E3`, accent `#151515` (same as ink — the site is
   intentionally monochrome, no color accent anywhere).
-- Type: Space Grotesk (display/headings), Inter (body), IBM Plex Mono
-  (small mono labels/eyebrows — the "spec sheet" annotation feel).
+- **Type: Newsreader (display/headings), IBM Plex Sans (body), IBM Plex
+  Mono (small labels/eyebrows — the "spec sheet" annotation feel).**
+  Replaced Space Grotesk + Inter + IBM Plex Mono on 2026-08-26 in a full
+  sitewide swap. The reasoning, so it isn't relitigated blind: the old
+  trio was *itself* the generic default this section warns against —
+  Space Grotesk + Inter is one of the most common startup-landing-page
+  pairings of the last few years, and Inter is the most-used UI font on
+  the web. On a page whose entire pitch is craft, the type is the primary
+  evidence, so a system that looks authored does real selling work.
+  Newsreader carries editorial authority and the "slim and elegant"
+  quality Daniels asked for, without the boutique/organic wonk that ruled
+  out Fraunces. Plex Sans also fixes a seam the old stack always had:
+  Inter and Plex Mono were unrelated faces, whereas Plex Sans and Plex
+  Mono are a designed pair, so body and eyebrows finally belong together.
+  All-Plex (Plex Sans for display too) was considered and rejected — the
+  headline went plain, which is the wrong trade for a design studio.
+- Font CSS variables are semantic (`--font-display`, `--font-body`,
+  `--font-mono`), not face-named, so a future swap touches `layout.tsx`
+  only. Note `tailwind.config.ts` changes need a dev server restart —
+  editing it alone leaves `.font-display` pointing at a deleted variable,
+  which silently inherits the body font rather than erroring.
+- **Header wordmark**: "VELC" in Newsreader 500, uppercase, `text-3xl`,
+  `tracking-[0.18em]`. Nothing else — no indent or margin correction.
+  (A `text-indent` was tried on 2026-08-26 to optically center the mark
+  in the mobile header and reverted: it shifted the mark 5.4px right of
+  the page margin on desktop, which is worse than the sub-pixel centering
+  it fixed. Don't re-add one.)
+  Drawn from the display face on purpose rather than given a dedicated
+  logo font — the wordmark should follow the type system, not precede it.
+  Wide-tracked serif caps read as a studio mark; a wide-tracked *sans* was
+  tried first and rejected because it is the standard enterprise/technical
+  vendor idiom and duplicated what the mono eyebrows already say.
 - Signature element: the hero schematic (`Schematic` component in
   `app/page.tsx`) — Idea → Design → Build → Deploy → Support, drawn as
   connected icon-badge nodes (Phosphor icons, `@phosphor-icons/react` —

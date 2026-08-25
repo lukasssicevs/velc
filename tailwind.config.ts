@@ -13,10 +13,11 @@ const config: Config = {
         accent: "#151515",
       },
       fontFamily: {
-        display: ["var(--font-space-grotesk)"],
-        body: ["var(--font-inter)"],
-        mono: ["var(--font-plex-mono)"],
-        logo: ["var(--font-fraunces)"],
+        // --font-display already carries its own fallback stack (set in
+        // layout.tsx); repeating it here would duplicate the generics.
+        display: ["var(--font-display)"],
+        body: ["var(--font-body)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
       maxWidth: {
         page: "1080px",

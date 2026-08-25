@@ -1,30 +1,29 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, IBM_Plex_Mono, Fraunces } from "next/font/google";
+import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-space-grotesk",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+  // Next 14 has no built-in metrics for Newsreader, so its automatic
+  // metric-matched fallback fails and warns at build. Pin the fallback
+  // stack ourselves instead of shipping an unadjusted one.
+  adjustFontFallback: false,
+  fallback: ["Iowan Old Style", "Palatino", "Georgia", "serif"],
 });
 
-const fraunces = Fraunces({
+const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
 });
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-plex-mono",
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -41,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable} ${fraunces.variable}`}
+      className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
       <body>{children}</body>
     </html>

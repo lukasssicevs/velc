@@ -209,6 +209,22 @@ one, so don't reintroduce color accents without being asked.
   switches to a vertical stacked layout rather than a horizontal scroller —
   the horizontal chain needs ~800px to fit without clipping, so don't lower
   that breakpoint without re-checking the fit.
+- **Schematic animation (retuned 2026-08-26).** It is a *progress* chain, not
+  a loop of blips: a dot travels each connector, the connector fills in behind
+  it and stays filled, and each node lights as the dot arrives — so the chain
+  visibly completes, holds at 11s, then resets. Two ordering rules were
+  arrived at by trial and are easy to break:
+  1. The node must begin lighting ~0.03s *before* the dot finishes landing.
+     Making the dot vanish completely first is literally correct but leaves a
+     ~0.3s dead beat that reads as a stutter.
+  2. The fills cannot share one `@keyframes` driven by `animation-delay` the
+     way the dot does. Lines fill at staggered times but must all clear at the
+     same instant; with a delay the clear staggers too and line 3 stays dark
+     six seconds into the next cycle. Hence one keyframe block per line, with
+     absolute cycle positions and no delay.
+  The full timeline is documented in the comment above the keyframes in
+  `app/globals.css`. Vertical (`-v-`) and horizontal (`-h-`) variants must
+  stay in lockstep — same percentages, different axis.
 
 ## What's NOT done yet
 

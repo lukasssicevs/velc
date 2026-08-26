@@ -84,71 +84,222 @@ button:focus-visible {
   }
 }
 
+/* Schematic chain timing (12s cycle, so 1% = 0.12s).
+   Nodes fire every 2s: node i at i*2s. Each connector's dot and line share a
+   delay of i*2 + 0.5s. Timeline for one hand-off, relative to node i:
+
+     +2.00s  node i+1 starts blooming
+     +2.05s  dot lands on it
+     +2.20s  dot fully gone
+     +2.24s  node i+1 hits peak
+
+   The bloom deliberately STARTS just before the dot lands, so the arrival
+   reads as delivering the light. An earlier version made the dot vanish
+   completely before the node fired; that ordering is literally correct but
+   leaves a ~0.3s dead beat that reads as a stutter. Keep the small overlap.
+   The dot must still be gone before the *next* dot appears (i*2+2.62s). */
 @keyframes node-pulse {
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(21, 21, 21, 0);
     transform: scale(1);
   }
-  4% {
-    box-shadow: 0 0 0 6px rgba(21, 21, 21, 0.12);
-    transform: scale(1.12);
+  /* fast attack so the node reads as being *struck* by the arriving dot */
+  2% {
+    box-shadow: 0 0 0 7px rgba(21, 21, 21, 0.14);
+    transform: scale(1.13);
   }
-  14% {
+  12% {
     box-shadow: 0 0 0 0 rgba(21, 21, 21, 0);
     transform: scale(1);
   }
 }
 
-@keyframes line-pulse {
-  0%,
-  100% {
-    background-color: #e6e6e3;
-  }
-  10% {
-    background-color: #151515;
-  }
-  22% {
-    background-color: #e6e6e3;
+/* Progress fill: each connector fills in behind the dot and STAYS filled, so
+   the chain reads as progress completing rather than a blip travelling.
+
+   These cannot share one @keyframes with a per-line animation-delay the way
+   the dot does. The lines fill at staggered times but must all clear at the
+   SAME instant; with a delay the clear staggers too, leaving line 3 still dark
+   six seconds into the next cycle. So each line gets its own keyframes with
+   absolute positions in the 12s cycle and animation-delay: 0.
+
+   Fill window per line i tracks the dot exactly (same absolute window, same
+   easing, so the dot rides the leading edge):
+     fill start = (i*2 + 0.62s) / 12s      fill end = (i*2 + 2.048s) / 12s
+   All lines then hold until 11s (91.67%) and retract by 11.4s (95%).
+   Adding a node needs another pair of these blocks. */
+.line-fill {
+  animation-name: var(--fill-v);
+}
+
+@media (min-width: 1024px) {
+  .line-fill {
+    animation-name: var(--fill-h);
   }
 }
 
-@keyframes dot-travel-v {
+@keyframes line-fill-h-0 {
   0%,
+  5.17% {
+    transform: scaleX(0);
+  }
+  17.07%,
+  91.67% {
+    transform: scaleX(1);
+  }
+  95%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+@keyframes line-fill-h-1 {
+  0%,
+  21.83% {
+    transform: scaleX(0);
+  }
+  33.73%,
+  91.67% {
+    transform: scaleX(1);
+  }
+  95%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+@keyframes line-fill-h-2 {
+  0%,
+  38.5% {
+    transform: scaleX(0);
+  }
+  50.4%,
+  91.67% {
+    transform: scaleX(1);
+  }
+  95%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+@keyframes line-fill-h-3 {
+  0%,
+  55.17% {
+    transform: scaleX(0);
+  }
+  67.07%,
+  91.67% {
+    transform: scaleX(1);
+  }
+  95%,
+  100% {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes line-fill-v-0 {
+  0%,
+  5.17% {
+    transform: scaleY(0);
+  }
+  17.07%,
+  91.67% {
+    transform: scaleY(1);
+  }
+  95%,
+  100% {
+    transform: scaleY(0);
+  }
+}
+@keyframes line-fill-v-1 {
+  0%,
+  21.83% {
+    transform: scaleY(0);
+  }
+  33.73%,
+  91.67% {
+    transform: scaleY(1);
+  }
+  95%,
+  100% {
+    transform: scaleY(0);
+  }
+}
+@keyframes line-fill-v-2 {
+  0%,
+  38.5% {
+    transform: scaleY(0);
+  }
+  50.4%,
+  91.67% {
+    transform: scaleY(1);
+  }
+  95%,
+  100% {
+    transform: scaleY(0);
+  }
+}
+@keyframes line-fill-v-3 {
+  0%,
+  55.17% {
+    transform: scaleY(0);
+  }
+  67.07%,
+  91.67% {
+    transform: scaleY(1);
+  }
+  95%,
+  100% {
+    transform: scaleY(0);
+  }
+}
+
+/* Vertical (below lg) and horizontal (lg+) variants must stay in lockstep —
+   same percentages, only the animated property differs. */
+@keyframes dot-travel-v {
+  0% {
+    opacity: 0;
+    top: 0%;
+  }
+  1% {
+    opacity: 1;
+    top: 0%;
+  }
+  12.9% {
+    opacity: 1;
+    top: 100%;
+  }
+  14.2% {
+    opacity: 0;
+    top: 100%;
+  }
+  /* invisible reset to the start so the next cycle begins cleanly */
+  14.3%,
   100% {
     opacity: 0;
     top: 0%;
-  }
-  3% {
-    opacity: 1;
-    top: 0%;
-  }
-  19% {
-    opacity: 1;
-    top: 100%;
-  }
-  22% {
-    opacity: 0;
-    top: 100%;
   }
 }
 
 @keyframes dot-travel-h {
-  0%,
+  0% {
+    opacity: 0;
+    left: 0%;
+  }
+  1% {
+    opacity: 1;
+    left: 0%;
+  }
+  12.9% {
+    opacity: 1;
+    left: 100%;
+  }
+  14.2% {
+    opacity: 0;
+    left: 100%;
+  }
+  14.3%,
   100% {
     opacity: 0;
     left: 0%;
-  }
-  3% {
-    opacity: 1;
-    left: 0%;
-  }
-  19% {
-    opacity: 1;
-    left: 100%;
-  }
-  22% {
-    opacity: 0;
-    left: 100%;
   }
 }

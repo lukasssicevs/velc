@@ -156,13 +156,18 @@ function Schematic() {
             </div>
             {i < nodes.length - 1 && (
               <div className="relative w-px h-8 lg:w-14 lg:h-px my-2 lg:my-0 lg:mx-2 lg:mt-[22px]">
+                <div className="absolute inset-0 bg-hairline" />
+                {/* Fills in behind the dot and holds, so completed steps stay
+                    marked. Keyframes carry absolute cycle positions per line,
+                    hence no animationDelay here — see globals.css. */}
                 <div
-                  className="absolute inset-0 bg-hairline [animation-name:line-pulse]"
+                  className="absolute inset-0 bg-ink origin-top lg:origin-left line-fill"
                   style={{
+                    ["--fill-v" as string]: `line-fill-v-${i}`,
+                    ["--fill-h" as string]: `line-fill-h-${i}`,
                     animationDuration: "12s",
                     animationIterationCount: "infinite",
                     animationTimingFunction: "ease-in-out",
-                    animationDelay: `${i * 2 + 0.6}s`,
                   }}
                 />
                 <span
@@ -171,7 +176,7 @@ function Schematic() {
                     animationDuration: "12s",
                     animationIterationCount: "infinite",
                     animationTimingFunction: "ease-in-out",
-                    animationDelay: `${i * 2 + 0.6}s`,
+                    animationDelay: `${i * 2 + 0.5}s`,
                   }}
                 />
               </div>

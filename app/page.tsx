@@ -4,7 +4,7 @@
 // See CLAUDE.md for context and how to extend this file.
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import {
   LightbulbIcon,
@@ -19,6 +19,7 @@ import {
   PackageIcon,
   ArrowsClockwiseIcon,
   CompassIcon,
+  CaretDownIcon,
 } from "@phosphor-icons/react";
 
 const nav = [
@@ -483,6 +484,159 @@ function WorkingTogether() {
 const inputClass =
   "w-full border hairline bg-bg text-ink text-sm px-3 py-2.5 rounded-md focus-visible:outline-none focus-visible:border-ink";
 
+/**
+ * Replaces a native <select>, which renders with OS chrome (blue macOS
+ * highlight, its own metrics) that ignores the monochrome palette.
+ *
+ * Native selects give keyboard support for free, so this implements the ARIA
+ * combobox pattern to match it: focus stays on the trigger and the highlighted
+ * option is tracked with aria-activedescendant. Arrow/Home/End move, Enter or
+ * Space selects, Escape closes, Tab closes and moves on. Don't simplify this
+ * into a div with a click handler.
+ */
+function Select({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder = "Select one",
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+  placeholder?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const listId = `${id}-list`;
+  const labelId = `${id}-label`;
+
+  const openAt = (index: number) => {
+    setOpen(true);
+    setActiveIndex(index);
+  };
+  const openAtSelected = () => openAt(Math.max(options.indexOf(value), 0));
+
+  const commit = (index: number) => {
+    onChange(options[index]);
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onPointerDown);
+    return () => document.removeEventListener("mousedown", onPointerDown);
+  }, [open]);
+
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    switch (event.key) {
+      case "ArrowDown":
+        event.preventDefault();
+        if (!open) openAtSelected();
+        else setActiveIndex((i) => Math.min(i + 1, options.length - 1));
+        break;
+      case "ArrowUp":
+        event.preventDefault();
+        if (!open) openAtSelected();
+        else setActiveIndex((i) => Math.max(i - 1, 0));
+        break;
+      case "Home":
+        if (open) {
+          event.preventDefault();
+          setActiveIndex(0);
+        }
+        break;
+      case "End":
+        if (open) {
+          event.preventDefault();
+          setActiveIndex(options.length - 1);
+        }
+        break;
+      case "Enter":
+      case " ":
+        event.preventDefault();
+        if (!open) openAtSelected();
+        else if (activeIndex >= 0) commit(activeIndex);
+        break;
+      case "Escape":
+        if (open) {
+          event.preventDefault();
+          setOpen(false);
+        }
+        break;
+      case "Tab":
+        setOpen(false);
+        break;
+    }
+  };
+
+  return (
+    <div>
+      <span id={labelId} className="eyebrow text-[0.7rem] block mb-2">
+        {label}
+      </span>
+      <div className="relative" ref={rootRef}>
+        <button
+          type="button"
+          role="combobox"
+          aria-expanded={open}
+          aria-haspopup="listbox"
+          aria-controls={open ? listId : undefined}
+          aria-labelledby={labelId}
+          aria-activedescendant={
+            open && activeIndex >= 0 ? `${id}-opt-${activeIndex}` : undefined
+          }
+          onClick={() => (open ? setOpen(false) : openAtSelected())}
+          onKeyDown={onKeyDown}
+          className={`${inputClass} flex items-center justify-between gap-2 text-left ${
+            value ? "text-ink" : "text-muted"
+          }`}
+        >
+          <span className="truncate">{value || placeholder}</span>
+          <CaretDownIcon
+            className={`h-3.5 w-3.5 shrink-0 text-muted transition-transform duration-150 ${
+              open ? "rotate-180" : ""
+            }`}
+            weight="bold"
+          />
+        </button>
+        {open && (
+          <ul
+            role="listbox"
+            id={listId}
+            aria-labelledby={labelId}
+            className="absolute z-20 mt-1 w-full border hairline bg-bg rounded-md py-1 shadow-[0_4px_16px_rgba(21,21,21,0.07)]"
+          >
+            {options.map((option, index) => (
+              <li
+                key={option}
+                id={`${id}-opt-${index}`}
+                role="option"
+                aria-selected={value === option}
+                onMouseEnter={() => setActiveIndex(index)}
+                // keeps focus on the trigger so aria-activedescendant stays valid
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => commit(index)}
+                className={`px-3 py-2 text-sm cursor-pointer ${
+                  index === activeIndex ? "bg-surface" : ""
+                } ${value === option ? "text-ink font-medium" : "text-ink/80"}`}
+              >
+                {option}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function WhoWeAreAndContact() {
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState("");
@@ -620,36 +774,18 @@ function WhoWeAreAndContact() {
                 />
               </div>
               <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="eyebrow text-[0.7rem] block mb-2">
-                    What are you trying to build?
-                  </label>
-                  <select
-                    value={buildType}
-                    onChange={(e) => setBuildType(e.target.value)}
-                    className={inputClass}
-                  >
-                    <option value="">Select one</option>
-                    <option>New product</option>
-                    <option>Existing product</option>
-                    <option>Internal tool</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="eyebrow text-[0.7rem] block mb-2">
-                    Platform
-                  </label>
-                  <select
-                    value={platform}
-                    onChange={(e) => setPlatform(e.target.value)}
-                    className={inputClass}
-                  >
-                    <option value="">Select one</option>
-                    <option>Web</option>
-                    <option>Mobile</option>
-                    <option>Both</option>
-                  </select>
-                </div>
+                <Select
+                  label="What are you trying to build?"
+                  value={buildType}
+                  onChange={setBuildType}
+                  options={["New product", "Existing product", "Internal tool"]}
+                />
+                <Select
+                  label="Platform"
+                  value={platform}
+                  onChange={setPlatform}
+                  options={["Web", "Mobile", "Both"]}
+                />
                 <div>
                   <label className="eyebrow text-[0.7rem] block mb-2">
                     Timeframe

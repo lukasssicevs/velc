@@ -35,6 +35,7 @@ export async function POST(request: Request) {
   }
 
   const email = typeof body.email === "string" ? body.email.trim() : "";
+  const phone = typeof body.phone === "string" ? body.phone.trim() : "";
   const buildType =
     typeof body.buildType === "string" ? body.buildType.trim() : "";
   const platform =
@@ -52,8 +53,10 @@ export async function POST(request: Request) {
     );
   }
 
+  // Phone stays optional — only the email is validated and required.
   const rows: [string, string][] = [
     ["From", email],
+    ["Phone", phone || "—"],
     ["What they're trying to build", buildType || "—"],
     ["Platform", platform || "—"],
     ["Timeframe", timeframe || "—"],

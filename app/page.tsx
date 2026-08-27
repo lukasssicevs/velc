@@ -643,6 +643,7 @@ function Select({
 function WhoWeAreAndContact() {
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [buildType, setBuildType] = useState("");
   const [platform, setPlatform] = useState("");
   const [timeframe, setTimeframe] = useState("");
@@ -659,7 +660,15 @@ function WhoWeAreAndContact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, buildType, platform, timeframe, budget, details }),
+        body: JSON.stringify({
+          email,
+          phone,
+          buildType,
+          platform,
+          timeframe,
+          budget,
+          details,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -763,18 +772,35 @@ function WhoWeAreAndContact() {
             </div>
           ) : (
             <div className="mt-8 max-w-xl mx-auto sm:mx-0 text-left space-y-5">
-              <div>
-                <label className="eyebrow text-[0.7rem] block mb-2">
-                  Your email
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="you@company.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className={inputClass}
-                />
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    Your email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    autoComplete="email"
+                    placeholder="you@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label className="eyebrow text-[0.7rem] block mb-2">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="+1 555 123 4567"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className={inputClass}
+                  />
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-5">
                 <Select
@@ -807,7 +833,7 @@ function WhoWeAreAndContact() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. $20-40k"
+                    placeholder="e.g. $40-80k"
                     value={budget}
                     onChange={(e) => setBudget(e.target.value)}
                     className={inputClass}

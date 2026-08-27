@@ -165,28 +165,49 @@ one, so don't reintroduce color accents without being asked.
 - Colors: bg `#FAFAF8`, surface `#F2F2EF`, ink `#151515`, muted `#6E6E6B`,
   hairline `#E6E6E3`, accent `#151515` (same as ink — the site is
   intentionally monochrome, no color accent anywhere).
-- **Type: Newsreader (display/headings), IBM Plex Sans (body), IBM Plex
-  Mono (small labels/eyebrows — the "spec sheet" annotation feel).**
-  Replaced Space Grotesk + Inter + IBM Plex Mono on 2026-08-26 in a full
-  sitewide swap. The reasoning, so it isn't relitigated blind: the old
+- **Type: Instrument Serif (display/headings), IBM Plex Sans (body), IBM
+  Plex Mono (small labels/eyebrows — the "spec sheet" annotation feel).**
+  Space Grotesk + Inter + Plex Mono was replaced on 2026-08-26 (the old
   trio was *itself* the generic default this section warns against —
   Space Grotesk + Inter is one of the most common startup-landing-page
-  pairings of the last few years, and Inter is the most-used UI font on
-  the web. On a page whose entire pitch is craft, the type is the primary
-  evidence, so a system that looks authored does real selling work.
-  Newsreader carries editorial authority and the "slim and elegant"
-  quality Daniels asked for, without the boutique/organic wonk that ruled
-  out Fraunces. Plex Sans also fixes a seam the old stack always had:
-  Inter and Plex Mono were unrelated faces, whereas Plex Sans and Plex
-  Mono are a designed pair, so body and eyebrows finally belong together.
-  All-Plex (Plex Sans for display too) was considered and rejected — the
-  headline went plain, which is the wrong trade for a design studio.
+  pairings going, and Inter is the most-used UI font on the web). Display
+  went Newsreader → Instrument Serif on 2026-08-27, matching the pattern
+  at blackboard.studio, which Lukass flagged as the reference: Instrument
+  Serif 400 for the hero, section headings and *names*, a sans for body
+  and anything that needs weight.
+- **The `-webkit-text-stroke` on `.font-display` is load-bearing — do not
+  remove it.** Instrument Serif has only a 400 cut and very fine hairlines,
+  so on its own it renders thin and washed out, nothing like the reference.
+  blackboard.studio fattens it with a same-colour text stroke instead of a
+  bolder cut, measured at exactly **0.05em on every element** (96px hero,
+  64px stats, 30px names alike). That stroke thickens the hairlines and
+  drops the contrast, and is the entire difference between "thin and
+  delicate" and the thick, juicy look. It lives in `globals.css` on
+  `.font-display`, in `em` so it scales with any size. There is no bolder
+  weight to reach for — this is the only lever.
+- **Instrument Serif ships ONE weight (400).** This is the constraint that
+  governs every heading decision here. Asking for 600 silently renders 400
+  rather than erroring — verified in-browser — so display elements carry
+  **no font-weight class at all**, and hierarchy comes from *size* instead.
+  That is why names were sized up when the face changed: project names
+  `text-xl`→`text-3xl`, package names and bios →`text-2xl`, hero
+  →`text-5xl sm:text-7xl`, contact h2 →`text-4xl sm:text-5xl`. If you
+  shrink these back you get thin, washed-out headings that stop reading as
+  headings — that was the whole failure mode. `tracking-tight` was also
+  dropped from the hero and h2: the face is already condensed.
+- Plex Sans fixes a seam the old stack had: Inter and Plex Mono were
+  unrelated faces, whereas Plex Sans and Plex Mono are a designed pair, so
+  body and eyebrows belong together. Two directions were considered and
+  rejected along the way: all-Plex (Plex Sans for display too) went plain,
+  and DM Sans for display+body had the same problem — one family covering
+  both roles collapses the hierarchy, and "clean low-contrast geometric"
+  is precisely the default category this page is trying not to be in.
 - Font CSS variables are semantic (`--font-display`, `--font-body`,
   `--font-mono`), not face-named, so a future swap touches `layout.tsx`
   only. Note `tailwind.config.ts` changes need a dev server restart —
   editing it alone leaves `.font-display` pointing at a deleted variable,
   which silently inherits the body font rather than erroring.
-- **Header wordmark**: "VELC" in Newsreader 500, uppercase, `text-3xl`,
+- **Header wordmark**: "VELC" in the display face, uppercase, `text-3xl`,
   `tracking-[0.18em]`. Nothing else — no indent or margin correction.
   (A `text-indent` was tried on 2026-08-26 to optically center the mark
   in the mobile header and reverted: it shifted the mark 5.4px right of

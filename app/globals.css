@@ -39,6 +39,18 @@ button:focus-visible {
   border-radius: 2px;
 }
 
+/* Instrument Serif ships only weight 400, and on its own it reads thin and
+   washed out — the hairlines are very fine. blackboard.studio (the reference
+   for this treatment) fattens it with a same-colour text stroke rather than a
+   bolder cut: measured at exactly 0.05em on every element, 96px hero down to
+   30px names. The stroke thickens the hairlines and drops the contrast, which
+   is the entire "juicy" look. Without this the face looks nothing like the
+   reference. Keep it proportional (em, not px) so it holds at every size, and
+   leave paint-order at the default — that is what the reference uses. */
+.font-display {
+  -webkit-text-stroke: 0.05em currentColor;
+}
+
 .eyebrow {
   font-family: var(--font-mono), monospace;
   font-size: 0.75rem;

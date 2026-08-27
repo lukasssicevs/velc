@@ -39,6 +39,9 @@ function getLinkIcon(label: string) {
 
 export default function Home() {
   return (
+    // pt must match the fixed header's height exactly (py-5 + the logo's
+    // line-box + 1px border). Changing the wordmark's size class changes that
+    // height, so re-measure and update this together with it.
     <main className="min-h-screen pt-[81px]">
       <Header />
       <Hero />
@@ -82,7 +85,7 @@ function Header() {
       }`}
     >
       <div className="mx-auto max-w-page px-6 py-5 flex items-center justify-center sm:justify-between">
-        <span className="font-display font-medium text-ink text-3xl tracking-[0.18em]">
+        <span className="font-display text-ink text-[40px] leading-none tracking-[0.06em]">
           VELC
         </span>
         <nav className="hidden sm:flex gap-6 eyebrow">
@@ -107,7 +110,7 @@ function Hero() {
         </span>
         Currently taking on new projects
       </p>
-      <h1 className="font-display font-semibold text-ink text-4xl sm:text-6xl leading-[1.05] tracking-tight max-w-3xl text-center sm:text-left">
+      <h1 className="font-display text-ink text-5xl sm:text-7xl leading-[1.02] max-w-4xl text-center sm:text-left">
         We design, build, and ship whole products.
       </h1>
       <p className="mt-6 max-w-xl text-lg text-muted leading-relaxed text-center sm:text-left mx-auto sm:mx-0">
@@ -362,7 +365,7 @@ function SelectedWork() {
                     ))}
                   </div>
                 )}
-                <h3 className="font-display font-semibold text-ink text-xl text-center sm:text-left">
+                <h3 className="font-display text-ink text-3xl text-center sm:text-left">
                   {p.name}
                 </h3>
               </div>
@@ -463,7 +466,7 @@ function WorkingTogether() {
               <div className="h-11 w-11 rounded-full border border-accent flex items-center justify-center mb-5">
                 <pkg.icon className="h-5 w-5 text-accent" weight="regular" />
               </div>
-              <h3 className="font-display font-semibold text-ink mb-2 text-center sm:text-left">
+              <h3 className="font-display text-ink text-2xl mb-2 text-center sm:text-left">
                 {pkg.name}
               </h3>
               <p className="text-sm text-muted leading-relaxed text-center sm:text-left">
@@ -685,7 +688,7 @@ function WhoWeAreAndContact() {
                 height={56}
                 className="rounded-full border hairline object-cover"
               />
-              <h3 className="font-display font-semibold text-ink text-xl">
+              <h3 className="font-display text-ink text-2xl">
                 Lukass
               </h3>
             </div>
@@ -712,7 +715,7 @@ function WhoWeAreAndContact() {
                 height={56}
                 className="rounded-full border hairline object-cover"
               />
-              <h3 className="font-display font-semibold text-ink text-xl">
+              <h3 className="font-display text-ink text-2xl">
                 Daniels
               </h3>
             </div>
@@ -733,7 +736,7 @@ function WhoWeAreAndContact() {
 
         <div className="mt-20 pt-16 sm:pt-20 border-t hairline text-center sm:text-left">
           <p className="eyebrow !text-sm mb-3">Get in touch</p>
-          <h2 className="font-display font-semibold text-ink text-3xl sm:text-4xl tracking-tight max-w-xl mx-auto sm:mx-0">
+          <h2 className="font-display text-ink text-4xl sm:text-5xl max-w-xl mx-auto sm:mx-0">
             Have something you want built?
           </h2>
           <p className="mt-4 max-w-xl text-muted leading-relaxed mx-auto sm:mx-0">
@@ -751,7 +754,7 @@ function WhoWeAreAndContact() {
             </button>
           ) : status === "sent" ? (
             <div className="mt-8 max-w-xl mx-auto sm:mx-0">
-              <p className="text-ink font-display font-semibold text-lg">
+              <p className="text-ink font-display text-xl">
                 Message sent.
               </p>
               <p className="mt-2 text-muted leading-relaxed">

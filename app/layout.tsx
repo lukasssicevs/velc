@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { Newsreader, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Instrument_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const newsreader = Newsreader({
+// Instrument Serif ships ONE weight (400). Asking for 600 silently renders 400
+// rather than erroring, so display headings carry no font-weight class — the
+// face's own high contrast does the work, and names are sized up instead.
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
   variable: "--font-display",
   display: "swap",
-  // Next 14 has no built-in metrics for Newsreader, so its automatic
-  // metric-matched fallback fails and warns at build. Pin the fallback
-  // stack ourselves instead of shipping an unadjusted one.
+  // Next 14 has no built-in metrics for this face, so its automatic
+  // metric-matched fallback fails and warns at build. Pin the stack ourselves.
   adjustFontFallback: false,
   fallback: ["Iowan Old Style", "Palatino", "Georgia", "serif"],
 });
@@ -40,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${plexSans.variable} ${plexMono.variable}`}
+      className={`${instrumentSerif.variable} ${plexSans.variable} ${plexMono.variable}`}
     >
       <body>{children}</body>
     </html>

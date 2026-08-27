@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import {
+  Instrument_Serif,
+  IBM_Plex_Sans,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import "./globals.css";
 
 // Instrument Serif ships ONE weight (400). Asking for 600 silently renders 400
@@ -29,7 +33,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VELC — Products built and shipped",
+  title: "VELC | Product Studio",
   description:
     "Two people, no layers. One builds, one runs the client side. Whole products, taken from an idea to something real people use.",
 };

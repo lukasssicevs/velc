@@ -38,7 +38,7 @@ concrete claims over adjectives, no hedging.
 ## Brand decisions already made (don't relitigate these)
 
 - **Studio name: VELC Product Studio**, but displayed as just **"VELC"**
-  almost everywhere (header, page title/metadata) — same backgrounding
+  on the visible page (the header wordmark) — same backgrounding
   pattern as before, just a different suffix. Originally "VELC Agency"
   (chosen 2026-08-25), changed to "VELC Product Studio" on 2026-08-26
   after Lukass worked through what the studio actually is: pure client
@@ -52,14 +52,22 @@ concrete claims over adjectives, no hedging.
   what it ships for clients. Don't revert to "Agency" or relitigate this
   without being asked. The "you talk to the people building it, no
   account manager" differentiator is preserved a level down: the
-  header/metadata carry just "VELC", but the "Who you're working with"
+  header wordmark carries just "VELC", but the "Who you're working with"
   section still names Lukass and Daniels personally, with photos and
-  direct contact info. The full form "VELC Product Studio" only appears
+  direct contact info. The full form "VELC Product Studio" appears
   where a bare four-letter word genuinely isn't enough: the footer
   copyright line, the contact-form sender name
-  (`app/api/contact/route.ts`), and (once picked) the domain/legal name.
-  Don't spell it out on the visible page elsewhere without being asked —
-  the whole point is that it stays backgrounded.
+  (`app/api/contact/route.ts`), the `<title>` metadata, and (once picked)
+  the domain/legal name.
+  **The `<title>` was changed on 2026-08-28** from "VELC — Products built
+  and shipped" to "VELC Product Studio — Design, build, ship". This is a
+  deliberate exception to the backgrounding rule, not a drift from it:
+  backgrounding works on the page because the surrounding content supplies
+  the context, but a browser tab or a search result has none — there, a
+  bare four-letter word tells a stranger nothing, and "product studio" is
+  the category term people actually search. Backgrounding still governs
+  the *visible* page; don't spell the full name out there without being
+  asked.
 - **Portfolio attribution — considered, deliberately kept minimal
   (2026-08-26).** None of the projects in `SelectedWork` involved
   Daniels — all five predate VELC and are Lukass's work alone. For
